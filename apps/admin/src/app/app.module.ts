@@ -21,6 +21,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 import { CategoriesService } from '@bluebits/products';
 import { CategoriesFormComponent } from './categories/categories-form/categories-form.component';
@@ -33,6 +34,7 @@ const UX_MODULE = [
   InputTextModule,
   ToastModule,
   ConfirmDialogModule,
+  ColorPickerModule,
 ];
 
 @NgModule({
