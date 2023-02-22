@@ -70,15 +70,15 @@ export class CategoriesFormComponent implements OnInit {
 
   private _addCategory(category: Category) {
     this.categoriesService.createCategory(category).subscribe(
-      () => {
+      (category: Category) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Category Created!',
+          detail: `Category ${category.name} Created!`,
         });
         timer(2000)
           .toPromise()
-          .then((done) => {
+          .then(() => {
             this.location.back();
           });
       },
@@ -94,11 +94,11 @@ export class CategoriesFormComponent implements OnInit {
 
   private _updateCategory(category: Category) {
     this.categoriesService.updateCategory(category, this.currentCategoryId).subscribe(
-      () => {
+      (category: Category) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Category Updated!',
+          detail: `Category ${category.name} Updated!`,
         });
         timer(2000)
           .toPromise()
@@ -114,6 +114,10 @@ export class CategoriesFormComponent implements OnInit {
         });
       },
     );
+  }
+
+  onCancel() {
+    this.location.back();
   }
 
   get categoryForm() {
