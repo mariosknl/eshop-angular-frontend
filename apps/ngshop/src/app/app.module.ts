@@ -13,7 +13,7 @@ import { UiModule } from '@bluebits/ui';
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent, ProductListComponent, HeaderComponent, FooterComponent],
-  imports: [BrowserModule, UiModule, RouterModule.forRoot(appRoutes)],
+  imports: [BrowserModule, RouterModule.forRoot(appRoutes), UiModule],
   providers: [],
   bootstrap: [AppComponent],
 })
