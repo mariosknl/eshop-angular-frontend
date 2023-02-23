@@ -17,7 +17,15 @@
     </div>
     <div class="grid">
       <div class="col-12">
-        <p-table [value]="categories" styleClass="p-datatable-gridlines">
+        <p-table
+          [paginator]="true"
+          [rows]="10"
+          [value]="categories"
+          styleClass="p-datatable-gridlines"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} categories"
+        >
           <ng-template pTemplate="header">
             <tr>
               <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>

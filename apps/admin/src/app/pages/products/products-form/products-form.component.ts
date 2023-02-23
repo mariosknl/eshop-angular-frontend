@@ -42,7 +42,7 @@ export class ProductsFormComponent implements OnInit {
       countInStock: ['', Validators.required],
       description: ['', Validators.required],
       richDescription: [''],
-      image: [''],
+      image: ['', Validators.required],
       isFeatured: [false],
     });
   }
@@ -116,6 +116,8 @@ export class ProductsFormComponent implements OnInit {
           this.productForm.richDescription.setValue(product.richDescription);
           this.productForm.isFeatured.setValue(product.isFeatured);
           this.imageDisplay = product.image;
+          this.productForm.image.setValidators([]);
+          this.productForm.image.updateValueAndValidity();
         });
       }
     });
@@ -139,7 +141,9 @@ export class ProductsFormComponent implements OnInit {
       this._addProduct(productFormData);
     }
   }
-  onCancel() {}
+  onCancel() {
+    this.location.back();
+  }
 
   onImageUpload(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
