@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, Category, Product, ProductsService } from '@bluebits/products';
 import { MessageService } from 'primeng/api';
 import { timer } from 'rxjs';
@@ -15,6 +16,7 @@ export class ProductsFormComponent implements OnInit {
   isSubmitted = false;
   categories: Category[] = [];
   imageDisplay: string | ArrayBuffer;
+  currentProductId: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,11 +24,13 @@ export class ProductsFormComponent implements OnInit {
     private productsService: ProductsService,
     private messageService: MessageService,
     private location: Location,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this._initForm();
     this._getCategories();
+    this._checkEditMode();
   }
 
   private _initForm(): void {
@@ -50,7 +54,6 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private _addProduct(productData: FormData) {
-    console.log(productData);
     this.productsService.createProduct(productData).subscribe(
       (product: Product) => {
         this.messageService.add({
@@ -74,6 +77,50 @@ export class ProductsFormComponent implements OnInit {
     );
   }
 
+  private _updateProduct(productFormData: FormData) {
+    this.productsService.updateProduct(productFormData, this.currentProductId).subscribe(
+      (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Category ${product.name} Updated!`,
+        });
+        timer(2000)
+          .toPromise()
+          .then(() => {
+            this.location.back();
+          });
+      },
+      () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Category Not Updated!',
+        });
+      },
+    );
+  }
+
+  private _checkEditMode() {
+    this.route.params.subscribe((params) => {
+      if (params.id) {
+        this.editMode = true;
+        this.currentProductId = params.id;
+        this.productsService.getProduct(params.id).subscribe((product) => {
+          this.productForm.name.setValue(product.name);
+          this.productForm.brand.setValue(product.brand);
+          this.productForm.price.setValue(product.price);
+          this.productForm.category.setValue(product.category.id);
+          this.productForm.countInStock.setValue(product.countInStock);
+          this.productForm.description.setValue(product.description);
+          this.productForm.richDescription.setValue(product.richDescription);
+          this.productForm.isFeatured.setValue(product.isFeatured);
+          this.imageDisplay = product.image;
+        });
+      }
+    });
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.form.invalid) {
@@ -86,7 +133,11 @@ export class ProductsFormComponent implements OnInit {
       productFormData.append(key, this.productForm[key].value);
     });
 
-    this._addProduct(productFormData);
+    if (this.editMode) {
+      this._updateProduct(productFormData);
+    } else {
+      this._addProduct(productFormData);
+    }
   }
   onCancel() {}
 

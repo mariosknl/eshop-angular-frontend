@@ -9,7 +9,7 @@ export class Product {
   images?: string[];
   brand?: string;
   price?: string;
-  Category?: Category;
+  category?: Category;
   countInStock?: number;
   rating?: number;
   numReviews?: number;
