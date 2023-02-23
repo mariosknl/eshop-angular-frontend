@@ -68,7 +68,7 @@
           </div>
           <div class="p-fluid formgrid grid">
             <div class="field col-4">
-              <label for="price">Count In Stock</label><br />
+              <label for="countInStock">Count In Stock</label><br />
               <p-inputNumber
                 formControlName="countInStock"
                 mode="decimal"
@@ -76,7 +76,7 @@
                 [useGrouping]="false"
               >
               </p-inputNumber>
-              <small class="p-error" *ngIf="productForm.price && isSubmitted"
+              <small class="p-error" *ngIf="productForm.countInStock.invalid && isSubmitted"
                 >Count In Stock is required</small
               >
             </div>

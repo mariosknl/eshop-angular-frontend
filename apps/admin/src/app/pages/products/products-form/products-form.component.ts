@@ -1,6 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CategoriesService, Category } from '@bluebits/products';
+import { CategoriesService, Category, Product, ProductsService } from '@bluebits/products';
+import { MessageService } from 'primeng/api';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'admin-products-form',
@@ -13,7 +16,13 @@ export class ProductsFormComponent implements OnInit {
   categories: Category[] = [];
   imageDisplay: string | ArrayBuffer;
 
-  constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private categoriesService: CategoriesService,
+    private productsService: ProductsService,
+    private messageService: MessageService,
+    private location: Location,
+  ) {}
 
   ngOnInit(): void {
     this._initForm();
@@ -30,7 +39,7 @@ export class ProductsFormComponent implements OnInit {
       description: ['', Validators.required],
       richDescription: [''],
       image: [''],
-      isFeatured: [''],
+      isFeatured: [false],
     });
   }
 
@@ -40,7 +49,45 @@ export class ProductsFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {}
+  private _addProduct(productData: FormData) {
+    console.log(productData);
+    this.productsService.createProduct(productData).subscribe(
+      (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: `Product ${product.name} Created!`,
+        });
+        timer(2000)
+          .toPromise()
+          .then(() => {
+            this.location.back();
+          });
+      },
+      () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Product Not Created!',
+        });
+      },
+    );
+  }
+
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.form.invalid) {
+      return;
+    }
+
+    const productFormData = new FormData();
+
+    Object.keys(this.productForm).forEach((key) => {
+      productFormData.append(key, this.productForm[key].value);
+    });
+
+    this._addProduct(productFormData);
+  }
   onCancel() {}
 
   onImageUpload(event: Event) {
