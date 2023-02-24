@@ -36,6 +36,9 @@
             <div class="col-12">
               <p-button label="Submit" (onClick)="onSubmit()" styleClass="full-btn"></p-button>
             </div>
+            <div class="col-12" *ngIf="isSubmitted && authError">
+              <small class="p-error">{{ authMessage }}</small>
+            </div>
           </div>
         </form>
       </div>
