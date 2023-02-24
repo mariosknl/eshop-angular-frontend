@@ -5,7 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { User, UsersService } from '@bluebits/users';
 import { MessageService } from 'primeng/api';
 import { timer } from 'rxjs';
+import * as countriesLib from 'i18n-iso-countries';
 
+declare const require;
 @Component({
   selector: 'admin-users-form',
   templateUrl: './users-form.component.html',
@@ -28,6 +30,7 @@ export class UsersFormComponent implements OnInit {
 
   ngOnInit(): void {
     this._initUserForm();
+    this._getCountries();
     this._checkEditMode();
   }
 
@@ -135,6 +138,16 @@ export class UsersFormComponent implements OnInit {
         });
       },
     );
+  }
+
+  private _getCountries() {
+    countriesLib.registerLocale(require('i18n-iso-countries/langs/en.json'));
+    this.countries = Object.entries(countriesLib.getNames('en')).map((entry) => {
+      return {
+        id: entry[0],
+        name: entry[1],
+      };
+    });
   }
 
   onCancel() {
