@@ -44,27 +44,28 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.isSubmitted = true;
+    this.route.navigate(['/']);
 
-    if (this.loginFormGroup.invalid) {
-      return;
-    }
+    // if (this.loginFormGroup.invalid) {
+    //   return;
+    // }
 
-    const loginData = {
-      email: this.loginForm.email.value,
-      password: this.loginForm.password.value,
-    };
-    this.authService.login(loginData.email, loginData.password).subscribe(
-      (user) => {
-        this.authError = false;
-        this.localstorageService.setToken(user.token);
-        this.route.navigate(['/']);
-      },
-      (error: HttpErrorResponse) => {
-        this.authError = true;
-        if (error.status !== 400) {
-          this.authMessage = 'Error in the server, please try again later';
-        }
-      },
-    );
+    // const loginData = {
+    //   email: this.loginForm.email.value,
+    //   password: this.loginForm.password.value,
+    // };
+    // this.authService.login(loginData.email, loginData.password).subscribe(
+    //   (user) => {
+    //     this.authError = false;
+    //     this.localstorageService.setToken(user.token);
+    //     this.route.navigate(['/']);
+    //   },
+    //   (error: HttpErrorResponse) => {
+    //     this.authError = true;
+    //     if (error.status !== 400) {
+    //       this.authMessage = 'Error in the server, please try again later';
+    //     }
+    //   },
+    // );
   }
 }

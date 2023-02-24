@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -30,5 +30,11 @@ export class UsersService {
 
   delete(userId: string): Observable<object> {
     return this.http.delete<object>(`${this.apiUrlUsers}/${userId}`);
+  }
+
+  getUsersCount(): Observable<number> {
+    return this.http
+      .get<number>(`${this.apiUrlUsers}/get/count`)
+      .pipe(map((objectValue: any) => objectValue.userCount));
   }
 }
