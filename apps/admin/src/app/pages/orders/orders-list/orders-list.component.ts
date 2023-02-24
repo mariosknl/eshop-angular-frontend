@@ -1,28 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Order, OrdersService } from '@bluebits/orders';
-
-const ORDER_STATUS = {
-  0: {
-    label: 'Pending',
-    color: 'primary',
-  },
-  1: {
-    label: 'Processed',
-    color: 'warning',
-  },
-  2: {
-    label: 'Shipped',
-    color: 'warning',
-  },
-  3: {
-    label: 'Delivered',
-    color: 'Success',
-  },
-  4: {
-    label: 'Failed',
-    color: 'danger',
-  },
-};
+import { ORDER_STATUS } from '../order.constants';
 
 @Component({
   selector: 'admin-orders-list',
@@ -32,10 +11,14 @@ export class OrdersListComponent implements OnInit {
   orders: Order[] = [];
   orderStatus = ORDER_STATUS;
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService, private router: Router) {}
 
   ngOnInit(): void {
     this._getOrders();
+  }
+
+  showOrder(orderId: string) {
+    this.router.navigateByUrl(`orders/${orderId}`);
   }
 
   private _getOrders() {

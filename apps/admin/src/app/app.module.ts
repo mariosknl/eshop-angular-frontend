@@ -29,6 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
 import { TagModule } from 'primeng/tag';
 import { InputMaskModule } from 'primeng/inputmask';
+import { FieldsetModule } from 'primeng/fieldset';
 
 import { CategoriesService } from '@bluebits/products';
 import { CategoriesFormComponent } from './pages/categories/categories-form/categories-form.component';
@@ -55,6 +56,7 @@ const UX_MODULE = [
   EditorModule,
   TagModule,
   InputMaskModule,
+  FieldsetModule,
 ];
 
 @NgModule({
