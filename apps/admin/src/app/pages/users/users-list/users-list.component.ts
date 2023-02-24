@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User, UsersService } from '@bluebits/users';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'admin-users-list',
   templateUrl: './users-list.component.html',
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnInit, OnDestroy {
   users: User[] = [];
+  endSubs$: Subject<any> = new Subject();
 
   constructor(
     private usersService: UsersService,
@@ -19,6 +21,11 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit(): void {
     this._getUsers();
+  }
+
+  ngOnDestroy() {
+    this.endSubs$.next(this.users);
+    this.endSubs$.complete();
   }
 
   deleteUser(userId: string) {
@@ -53,8 +60,11 @@ export class UsersListComponent implements OnInit {
   }
 
   private _getUsers() {
-    this.usersService.getUsers().subscribe((users) => {
-      this.users = users;
-    });
+    this.usersService
+      .getUsers()
+      .pipe(takeUntil(this.endSubs$))
+      .subscribe((users) => {
+        this.users = users;
+      });
   }
 }
