@@ -15,6 +15,7 @@ import { ShellComponent } from './shared/shell/shell.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { CategoriesListComponent } from './pages/categories/categories-list/categories-list.component';
 
+import { UsersModule } from '@bluebits/users';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -81,6 +82,7 @@ const UX_MODULE = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+    UsersModule,
     ...UX_MODULE,
   ],
   providers: [CategoriesService, MessageService, ConfirmationService],
