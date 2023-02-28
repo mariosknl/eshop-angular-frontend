@@ -12,10 +12,26 @@ import { FooterComponent } from './shared/footer/footer.component';
 
 import { UiModule } from '@bluebits/ui';
 import { AccordionModule } from 'primeng/accordion';
+import { NavComponent } from './shared/nav/nav.component';
+import { ProductsModule } from '@bluebits/products';
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, ProductListComponent, HeaderComponent, FooterComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, RouterModule.forRoot(appRoutes), UiModule, AccordionModule],
+  declarations: [
+    AppComponent,
+    HomePageComponent,
+    ProductListComponent,
+    HeaderComponent,
+    FooterComponent,
+    NavComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    RouterModule.forRoot(appRoutes),
+    UiModule,
+    AccordionModule,
+    ProductsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
