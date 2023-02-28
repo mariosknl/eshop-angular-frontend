@@ -3,7 +3,7 @@
   <div class="grid">
     <div class="col-2" *ngFor="let category of categories">
       <div
-        [routerLink]="'/products/category/' + category.id"
+        [routerLink]="'/category/' + category.id"
         [ngStyle]="{ backgroundColor: category.color }"
         class="category"
       >
